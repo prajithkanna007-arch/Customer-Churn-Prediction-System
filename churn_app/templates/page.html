@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">CUSTOMER INTELLIGENCE</div><h1>{{ title }}</h1><p class="page-subtitle">Understand customer behavior and build stronger retention.</p></div>
+  <div class="date-chip"><span class="date-icon">◷</span>Live workspace</div>
+</div>
+<div class="welcome-strip"><div class="welcome-symbol">✳</div><div><strong>Your retention workspace is ready to take shape.</strong><p>Start by bringing in your customer data. We’ll help you map your columns before any analysis begins.</p></div><a href="{{ url_for('main.data_management') }}" class="text-link">Explore data setup <span>→</span></a></div>
+<div class="section-heading"><div><h2>{{ title }} overview</h2><p>Designed around your data, with no assumptions about your business.</p></div><span class="status-pill"><span></span>Awaiting data</span></div>
+<section class="empty-card" aria-live="polite">
+  <div class="empty-art" aria-hidden="true"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-center"><span>✳</span></div><div class="art-star star-one">✦</div><div class="art-star star-two">·</div><div class="art-star star-three">✧</div></div>
+  <div class="empty-copy"><span class="empty-kicker">A FRESH START</span><h3>Meaningful insights start with your data</h3><p>{{ message }}</p><a class="primary-button" href="{{ url_for('main.data_management') }}">Go to data management <span>→</span></a></div>
+  <div class="empty-meta"><span class="meta-icon">i</span><span>No customer records, churn metrics, or model results are shown until they can be calculated from your data.</span></div>
+</section>
+{% endblock %}

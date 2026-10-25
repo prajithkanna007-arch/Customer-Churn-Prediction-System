@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/machine_learning.css') }}">{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">EVALUATION</div><h1>{{ title }}</h1><p class="page-subtitle">Review validation comparisons and final held-out test metrics.</p></div>
+  <a class="secondary-button" href="{{ url_for('main.prediction') }}">Open model workbench →</a>
+</div>
+<div class="ml-note"><strong>Accuracy can be misleading for imbalanced classes.</strong> Review positive-class precision, recall, F1, class distribution, and the confusion matrix. Baseline comparison uses validation F1 at a 0.5 threshold; the held-out test split is reserved for final reporting and should not be used for tuning or model selection.</div>
+<section class="ml-card">
+  <div class="ml-section-heading"><div><span class="step-label">TRAINING HISTORY</span><h2>Model versions and evaluation</h2><p>Each training run compares Logistic Regression and Random Forest on the same dataset splits.</p></div></div>
+  <label class="control-field run-select"><span>Training run</span><select id="training-run-select"><option value="">Loading training history…</option></select></label>
+  <div id="report-status" class="ml-status" role="status" aria-live="polite" hidden></div>
+  <div id="run-summary" class="run-summary"></div>
+  <div id="comparison-chart-wrap" class="chart-wrap" hidden><canvas id="comparison-chart" aria-label="Held-out test model metric comparison" role="img"></canvas></div>
+  <div id="model-report-list" class="model-report-list"></div>
+  <div id="failed-runs" class="failed-runs"></div>
+</section>
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script defer src="{{ url_for('static', filename='js/reports.js') }}"></script>
+{% endblock %}

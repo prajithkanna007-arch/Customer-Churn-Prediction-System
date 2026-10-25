@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.Python
+venv/
+.venv/
+env/
+.env
+.env.*
+!.env.example
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local configuration and secrets
+.flaskenv
+instance/
+*.sqlite
+*.sqlite3
+*.db
+
+# Uploaded customer data and generated artifacts
+uploads/
+data/uploads/
+instance/uploads/
+instance/models/
+*.csv
+*.joblib
+*.pkl
+models/generated/

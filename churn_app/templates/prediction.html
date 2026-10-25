@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/machine_learning.css') }}">{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">MODEL WORKBENCH</div><h1>{{ title }}</h1><p class="page-subtitle">Train historical baselines, then score a compatible customer dataset.</p></div>
+  <span class="status-pill"><span></span>Predictions require a saved model</span>
+</div>
+
+<div class="ml-note"><strong>Predictions are estimates.</strong> A high-risk score does not guarantee a customer will leave. Operational risk bands default to high ≥ 0.70 and medium ≥ 0.40; these are configurable working thresholds, not scientifically guaranteed boundaries.</div>
+
+<section class="ml-card" aria-labelledby="train-title">
+  <div class="ml-section-heading"><div><span class="step-label">01 · HISTORICAL TRAINING</span><h2 id="train-title">Train and compare baseline models</h2><p>Requires a saved labeled dataset with both selected target classes and at least one feature.</p></div><a class="text-link" href="{{ url_for('main.reports') }}">View model reports <span>→</span></a></div>
+  <form id="train-form" class="ml-form">
+    <label class="control-field"><span>Labeled historical dataset</span><select id="training-dataset" required><option value="">Loading datasets…</option></select></label>
+    <button class="primary-button" id="train-button" type="submit">Train both models <span>→</span></button>
+  </form>
+  <div id="training-status" class="ml-status" role="status" aria-live="polite" hidden></div>
+  <div id="training-results" class="training-results" aria-live="polite"></div>
+</section>
+
+<section class="ml-card" aria-labelledby="score-title">
+  <div class="ml-section-heading"><div><span class="step-label">02 · CUSTOMER SCORING</span><h2 id="score-title">Generate churn predictions</h2><p>The scoring dataset must have the same configured feature columns and compatible data types as the saved model.</p></div></div>
+  <form id="prediction-form" class="ml-form prediction-form">
+    <label class="control-field"><span>Saved model version</span><select id="model-version" required><option value="">Loading models…</option></select></label>
+    <label class="control-field"><span>Dataset to score</span><select id="scoring-dataset" required><option value="">Loading datasets…</option></select></label>
+    <label class="control-field threshold-field"><span>High-risk threshold</span><input id="high-threshold" type="number" min="0" max="1" step="0.01" value="0.70" required></label>
+    <label class="control-field threshold-field"><span>Medium-risk threshold</span><input id="medium-threshold" type="number" min="0" max="1" step="0.01" value="0.40" required></label>
+    <button class="primary-button" id="score-button" type="submit">Generate predictions <span>→</span></button>
+  </form>
+  <div id="prediction-status" class="ml-status" role="status" aria-live="polite" hidden></div>
+  <div id="prediction-summary" class="prediction-summary"></div>
+  <section id="prediction-results" class="prediction-results" hidden>
+    <div class="results-toolbar">
+      <div><h3>Customer-level results</h3><p id="results-count"></p></div>
+      <a id="export-results" class="secondary-button" href="#" hidden>Export CSV ↓</a>
+    </div>
+    <div class="result-filters">
+      <label class="control-field"><span>Find customer ID</span><input id="result-search" type="search" maxlength="100" placeholder="Search IDs"></label>
+      <label class="control-field"><span>Risk category</span><select id="risk-filter"><option value="">All categories</option><option value="high">High risk</option><option value="medium">Medium risk</option><option value="low">Low risk</option><option value="unavailable">Probability unavailable</option></select></label>
+      <label class="control-field"><span>Sort by</span><select id="result-sort"><option value="row_number">Source row</option><option value="churn_probability">Churn probability</option><option value="risk_category">Risk category</option><option value="customer_id">Customer ID</option><option value="predicted_class">Predicted class</option></select></label>
+      <label class="control-field"><span>Direction</span><select id="sort-direction"><option value="desc">Descending</option><option value="asc">Ascending</option></select></label>
+    </div>
+    <div class="table-scroll result-table-scroll"><table class="result-table"><thead id="result-head"></thead><tbody id="result-body"></tbody></table></div>
+    <div class="pagination"><button id="previous-page" class="secondary-button" type="button">← Previous</button><span id="page-indicator"></span><button id="next-page" class="secondary-button" type="button">Next →</button></div>
+  </section>
+</section>
+<p class="ml-footnote">Historical target labels are shown separately from model predictions when available. Unlabeled datasets never receive fabricated actual outcomes. Held-out test metrics are for final reporting; compare baseline candidates using their validation metrics.</p>
+<script defer src="{{ url_for('static', filename='js/prediction.js') }}"></script>
+{% endblock %}

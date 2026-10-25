@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/data_management.css') }}">{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">CUSTOMER DATA</div><h1>{{ title }}</h1><p class="page-subtitle">Upload a CSV, review its quality, and tell us what each column means.</p></div>
+  <span class="status-pill"><span></span>Files stay in this workspace</span>
+</div>
+
+<section class="upload-card" aria-labelledby="upload-title">
+  <div class="upload-copy"><span class="upload-icon" aria-hidden="true">↑</span><div><h2 id="upload-title">Add a customer dataset</h2><p>CSV files up to 20 MB. Your original column names are reviewed before configuration.</p></div></div>
+  <form id="upload-form" class="upload-form" enctype="multipart/form-data">
+    <label class="file-picker" for="csv-file"><span>Choose CSV</span><span id="file-name">No file selected</span></label>
+    <input id="csv-file" name="file" type="file" accept=".csv,text/csv" required>
+    <button class="primary-button" id="upload-button" type="submit">Upload dataset <span>→</span></button>
+  </form>
+  <div class="upload-status" id="upload-status" role="status" aria-live="polite" hidden></div>
+</section>
+
+<div class="data-workspace">
+  <section class="dataset-panel" aria-labelledby="datasets-title">
+    <div class="panel-heading"><div><h2 id="datasets-title">Your datasets</h2><p id="dataset-count">Loading saved datasets…</p></div><button class="icon-button" id="refresh-datasets" type="button" aria-label="Refresh dataset list" title="Refresh">↻</button></div>
+    <div class="dataset-list" id="dataset-list" aria-live="polite"><div class="inline-loading"><span class="spinner"></span>Loading datasets…</div></div>
+  </section>
+  <section class="dataset-detail" id="dataset-detail" aria-live="polite">
+    <div class="detail-empty"><div class="detail-empty-icon">▤</div><h2>Select a dataset to inspect it</h2><p>Row previews, quality findings, and column configuration will appear here.</p></div>
+  </section>
+</div>
+<script defer src="{{ url_for('static', filename='js/data_management.js') }}"></script>
+{% endblock %}
